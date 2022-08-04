@@ -10,10 +10,11 @@ const jumpHeight = 100;
 
 function App() {
 //position of bird will be at 250px
-const [birdPosition, setBirdPosition] = useState(250)
-
 //top position = 0;
 // bottom position = 480px;
+const [birdPosition, setBirdPosition] = useState(250);
+const [gameStart, setGameStart] = useState(false);
+
 
 //The setInterval() function is commonly used to set a delay for functions that are executed again and again, such as animations.
 
@@ -22,7 +23,7 @@ const [birdPosition, setBirdPosition] = useState(250)
 
 useEffect(() => {
   let timeId;
-if(birdPosition < gameHeight - birdSize){
+if(gameStart && birdPosition < gameHeight - birdSize){
   timeId = setInterval(() => {
   setBirdPosition(birdPosition => birdPosition + gravity)
 }, 24); //execute this line of code after a 24ms delay continuously.
@@ -31,17 +32,19 @@ if(birdPosition < gameHeight - birdSize){
 return () => {
   clearInterval(timeId)
 };
-});
+}, [birdPosition, gameStart]); //bird position stays stuck in the center until screen is clicked.
 
   const handleClick = () => {
   let newBirdPosition = birdPosition - jumpHeight; //makes the bird go up.
-  if(newBirdPosition < 0){
+  if(!gameStart){
+    setGameStart(true)
+  }
+  else if(newBirdPosition < 0){
     setBirdPosition(0) //bird is at top of screen
   }
-  else{
+  else {
     setBirdPosition(newBirdPosition);
   }
- 
   };
 
   return (
