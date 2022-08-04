@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 const birdSize = 20;
 const gameHeight = 500;
 const gameWidth = 500;
-const gravity = 3;
+const gravity = 6;
+const jumpHeight = 100;
 
 function App() {
 //position of bird will be at 250px
@@ -32,9 +33,19 @@ return () => {
 };
 });
 
-  
+  const handleClick = () => {
+  let newBirdPosition = birdPosition - jumpHeight; //makes the bird go up.
+  if(newBirdPosition < 0){
+    setBirdPosition(0) //bird is at top of screen
+  }
+  else{
+    setBirdPosition(newBirdPosition);
+  }
+ 
+  };
+
   return (
-    <Div>
+    <Div onClick={handleClick}>
       <GameBox height={gameHeight} width={gameWidth}>
       <Bird size={birdSize} top={birdPosition} />
       </GameBox>
